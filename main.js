@@ -23,14 +23,14 @@ $(document).ready(function(){
         var movies = data_response.results;
         console.log(movies);
 // creo ciclo for per estrapolare i risultati richiesti dalla ricerca dell'utente
-        for(var i=0; i<movies.legth; i++){
+        for(var i=0; i<movies.length; i++){
           var movie = movies[i];
-
+// dichiaro le variabili alle quali associo i valori che mi interessano
           var titolo = movie.title;
           var titolo_originale = movie.original_title;
           var lingua = movie.original_language;
           var voto = movie.vote_average;
-
+// creo oggetto handlebars
           var handlebars_variables = {
             'title':titolo,
             'original_title':titolo_originale,
