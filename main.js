@@ -1,5 +1,8 @@
 $(document).ready(function(){
 
+  var template_html=$('#template_film').html();
+  var template_function = Handlebars.compile(template_html);
+
   var url_base = 'https://api.themoviedb.org/3/';
 // intercetto il click del bottone
   $('#but_utente').click(function(){
@@ -16,9 +19,27 @@ $(document).ready(function(){
       },
       'method':'GET',
       success:function(data_response){
-        console.log(data_response);
+// dichiaro una variabile per i risultati della ricerca
         var movies = data_response.results;
         console.log(movies);
+// creo ciclo for per estrapolare i risultati richiesti dalla ricerca dell'utente
+        for(var i=0; i<movies.legth; i++){
+          var movie = movies[i];
+
+          var titolo = movie.title;
+          var titolo_originale = movie.original_title;
+          var lingua = movie.original_language;
+          var voto = movie.vote_average;
+
+          var handlebars_variables = {
+            'title':titolo,
+            'original_title':titolo_originale,
+            'language':lingua,
+            'rating':voto
+          }
+          var html_locandina = template_function(handlebars_variables);
+          $('#cont_locandina').append(html_locandina);
+        }
       },
       error:function(){
         alert('errore');

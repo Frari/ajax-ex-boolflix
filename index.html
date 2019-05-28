@@ -15,10 +15,21 @@
         </div>
         <div class="header_right">
           <button id="but_utente" type="button" name="button">cerca</button>
-          <input id="input_utente "type="text" name="" value="">
+          <input id="input_utente" type="text" name="" value="">
         </div>
       </header>
+      <div id="cont_locandina">
+
+      </div>
     </div>
     <script src="main.js" charset="utf-8"></script>
+    <script id="template_film" type="text/x-handlebars-template">
+      <div class='locandina'>
+      <p><span>TITOLO: </span>{{title}}</p>
+      <p><span>TITOLO ORIGINALE: </span>{{original_title}}</p>
+      <p><span>LINGUA: </span>{{language}}</p>
+      <p><span>VOTO: </span>{{rating}}</p>
+      </div>
+    </script>
   </body>
 </html>
