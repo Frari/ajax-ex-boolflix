@@ -49,21 +49,19 @@ var inserimento_utente = $('#input_utente').val();
           var titolo = movie.title;
           var titolo_originale = movie.original_title;
           var lingua = movie.original_language;
-          var voto = movie.vote_average;
+          var numero_stelline = get_numero_stelline(parseFloat(movie.vote_average));
+          var html_stelline = get_html_stelline(numero_stelline);
+
 // creo oggetto handlebars
           var handlebars_variables = {
             'title':titolo,
             'original_title':titolo_originale,
             'language':lingua,
-            'rating':voto_arrotondato +
+            'rating':voto
           }
           var html_locandina = template_function(handlebars_variables);
           $('#cont_locandina').append(html_locandina);
 
-// dichiaro le variabili per dimezzare e arrotondare il voto
-          var mezzo_voto = voto/2;
-          var voto_arrotondato = Math.ceil(mezzo_voto);
-          console.log(voto_arrotondato);
         }
       },
       error:function(){
@@ -72,8 +70,17 @@ var inserimento_utente = $('#input_utente').val();
 
     })
   }
-  // function voto_arrotondato(voto){
-  //   var mezzo_voto = voto/2;
-  //   console.log(mezzo_voto);
-  // }
+  // funzione per dimezzare e arrontondare il voto dei film
+  function get_numero_stelline(voto){
+    var stelline = Math.ceil(voto/2);
+  }
+
+  // funzione per convertire i voti in get_numero_stelline
+  function get_html_stelline(n_stelline){
+    var icone_stelline = '';
+
+    for(var i=0; i<5; i++){
+      console.log(i);
+    }
+  }
 });
