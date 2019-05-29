@@ -35,7 +35,7 @@ $(document).ready(function(){
   function chiamata_api(inserimento_utente){
     var inserimento_utente = $('#input_utente').val();
 
-// effettuo la chiamata ajax
+// effettuo la chiamata ajax per i film
     $.ajax({
       'url' : url_base + 'search/movie',
       'data' : {
@@ -45,39 +45,88 @@ $(document).ready(function(){
       },
       'method':'GET',
       success:function(data_response){
-// svuoto la schermata dalle locandine precedenti per nuova ricerca
-        $('#cont_locandina').html('');
 // dichiaro una variabile per i risultati della ricerca
         var movies = data_response.results;
-
-// creo ciclo for per estrapolare i risultati richiesti dalla ricerca dell'utente
-        for(var i=0; i<movies.length; i++){
-          var movie = movies[i];
-// dichiaro le variabili alle quali associo i valori che mi interessano
-          var titolo = movie.title;
-          var titolo_originale = movie.original_title;
-          var lingua = get_bandiera_lingua(movie.original_language);
-          var numero_stelline = get_numero_stelline(parseFloat(movie.vote_average));
-          var html_stelline = get_html_stelline(numero_stelline);
-
-// creo oggetto handlebars
-          var handlebars_variables = {
-            'title':titolo,
-            'original_title':titolo_originale,
-            'language':lingua,
-            'rating':html_stelline
-          }
-          var html_locandina = template_function(handlebars_variables);
-          $('#cont_locandina').append(html_locandina);
-
-        }
+        stampa_locandine(movies);
       },
       error:function(){
         alert('errore');
       }
 
-    })
+    });
+    // effettuo la chiamata ajax per le serie
+        $.ajax({
+          'url' : url_base + 'search/tv',
+          'data' : {
+            'api_key':'da08093a3b06b0ad6a16cb0b2a73ed6b',
+            'query': inserimento_utente,
+            'language':'it'
+          },
+          'method':'GET',
+          success:function(data_response){
+    // dichiaro una variabile per i risultati della ricerca
+            var movies = data_response.results;
+            stampa_locandine(series);
+          },
+          error:function(){
+            alert('errore');
+          }
+
+        })
   }
+  // funzione per stampare le locandine dei film
+  function stampa_locandine(movies){
+    // svuoto la schermata dalle locandine precedenti per nuova ricerca
+    $('#cont_locandina').html('');
+    // creo ciclo for per estrapolare i risultati richiesti dalla ricerca dell'utente
+    for(var i=0; i<movies.length; i++){
+      var movie = movies[i];
+    // dichiaro le variabili alle quali associo i valori che mi interessano
+      var titolo = movie.title;
+      var titolo_originale = movie.original_title;
+      var lingua = get_bandiera_lingua(movie.original_language);
+      var numero_stelline = get_numero_stelline(parseFloat(movie.vote_average));
+      var html_stelline = get_html_stelline(numero_stelline);
+
+    // creo oggetto handlebars
+      var handlebars_variables = {
+        'title':titolo,
+        'original_title':titolo_originale,
+        'language':lingua,
+        'rating':html_stelline
+      }
+      var html_locandina = template_function(handlebars_variables);
+      $('#cont_locandina').append(html_locandina);
+
+    }
+
+
+  }
+  // funzione per stampare le locandine delle serie tv
+  function stampa_locandine(series){
+    // svuoto la schermata dalle locandine precedenti per nuova ricerca
+    $('#cont_locandina').html('');
+    // creo ciclo for per estrapolare i risultati richiesti dalla ricerca dell'utente
+    for(var i=0; i<serie.length; i++){
+      var serie = series[i];
+    // dichiaro le variabili alle quali associo i valori che mi interessano
+      var titolo = serie.name;
+      var titolo_originale = serie.original_name;
+      var lingua = get_bandiera_lingua(serie.original_language);
+      var numero_stelline = get_numero_stelline(parseFloat(serie.vote_average));
+      var html_stelline = get_html_stelline(numero_stelline);
+
+    // creo oggetto handlebars
+      var handlebars_variables = {
+        'title':titolo,
+        'original_title':titolo_originale,
+        'language':lingua,
+        'rating':html_stelline
+      }
+      var html_locandina = template_function(handlebars_variables);
+      $('#cont_locandina').append(html_locandina);
+
+    }
   // funzione per dimezzare e arrontondare il voto dei film
   function get_numero_stelline(voto){
     var stelline = Math.ceil(voto/2);
