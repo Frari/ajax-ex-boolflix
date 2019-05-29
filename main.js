@@ -8,10 +8,10 @@ $(document).ready(function(){
 // intercetto il pulsante invio per avviare la ricerca
   $('#input_utente').keyup(function(event){
     if(event.which==13){
+      // recupero il valore inserito dall'utente
+      var inserimento_utente = $('#input_utente').val();
 // richiamo la funzione della chiamata api
       chiamata_api(inserimento_utente);
-// recupero il valore inserito dall'utente
-      var inserimento_utente = $('#input_utente').val();
     };
 
   })
@@ -19,14 +19,13 @@ $(document).ready(function(){
 // intercetto il click del bottone
   $('#but_utente').click(function(){
 // prendo il valore della parola digitata dall'utente
-var inserimento_utente = $('#input_utente').val();
-
+    var inserimento_utente = $('#input_utente').val();
     chiamata_api(inserimento_utente);
 
   });
 
 // creo funzione per chiamata ajax
-  function chiamata_api(testo){
+  function chiamata_api(inserimento_utente){
     var inserimento_utente = $('#input_utente').val();
 
 // effettuo la chiamata ajax
@@ -34,7 +33,7 @@ var inserimento_utente = $('#input_utente').val();
       'url' : url_base + 'search/movie',
       'data' : {
         'api_key':'da08093a3b06b0ad6a16cb0b2a73ed6b',
-        'query': testo,
+        'query': inserimento_utente,
         'language':'it'
       },
       'method':'GET',
@@ -57,7 +56,7 @@ var inserimento_utente = $('#input_utente').val();
             'title':titolo,
             'original_title':titolo_originale,
             'language':lingua,
-            'rating':voto
+            'rating':html_stelline
           }
           var html_locandina = template_function(handlebars_variables);
           $('#cont_locandina').append(html_locandina);
@@ -80,7 +79,12 @@ var inserimento_utente = $('#input_utente').val();
     var icone_stelline = '';
 
     for(var i=0; i<5; i++){
-      console.log(i);
+      if(i<n_stelline){
+        icone_stelline+='<i class="fas fa-star"></i>';
+      }else{
+        icone_stelline+='<i class="far fa-star"></i>';
+      }
     }
+    return icone_stelline;
   }
 });
