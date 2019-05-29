@@ -5,6 +5,9 @@ $(document).ready(function(){
   var template_html=$('#template_film').html();
   var template_function = Handlebars.compile(template_html);
 
+  // creo array con bandiere disponibili
+  var bandiere_disponibili = ['en','it'];
+
 // intercetto il pulsante invio per avviare la ricerca
   $('#input_utente').keyup(function(event){
     if(event.which==13){
@@ -12,6 +15,8 @@ $(document).ready(function(){
       var inserimento_utente = $('#input_utente').val();
 // richiamo la funzione della chiamata api
       chiamata_api(inserimento_utente);
+// azzero la ricerca
+       $('#input_utente').val('');
     };
 
   })
@@ -21,6 +26,8 @@ $(document).ready(function(){
 // prendo il valore della parola digitata dall'utente
     var inserimento_utente = $('#input_utente').val();
     chiamata_api(inserimento_utente);
+// azzero la ricerca
+    $('#input_utente').val('');
 
   });
 
@@ -38,6 +45,8 @@ $(document).ready(function(){
       },
       'method':'GET',
       success:function(data_response){
+// svuoto la schermata dalle locandine precedenti per nuova ricerca
+        $('#cont_locandina').html('');
 // dichiaro una variabile per i risultati della ricerca
         var movies = data_response.results;
 
@@ -47,7 +56,7 @@ $(document).ready(function(){
 // dichiaro le variabili alle quali associo i valori che mi interessano
           var titolo = movie.title;
           var titolo_originale = movie.original_title;
-          var lingua = movie.original_language;
+          var lingua = get_bandiera_lingua(movie.original_language);
           var numero_stelline = get_numero_stelline(parseFloat(movie.vote_average));
           var html_stelline = get_html_stelline(numero_stelline);
 
@@ -72,12 +81,13 @@ $(document).ready(function(){
   // funzione per dimezzare e arrontondare il voto dei film
   function get_numero_stelline(voto){
     var stelline = Math.ceil(voto/2);
+    return stelline;
   }
 
   // funzione per convertire i voti in get_numero_stelline
   function get_html_stelline(n_stelline){
     var icone_stelline = '';
-
+// ciclo for per creare stelline piene e vuote
     for(var i=0; i<5; i++){
       if(i<n_stelline){
         icone_stelline+='<i class="fas fa-star"></i>';
@@ -86,5 +96,12 @@ $(document).ready(function(){
       }
     }
     return icone_stelline;
+  }
+  // creo funzione per far apparire le bandiere a seconda della lingua del film
+  function get_bandiera_lingua(lingua){
+    if(bandiere_disponibili.includes(lingua)){
+      return '<img src="img/'+ lingua +'.png">';
+    }
+    return lingua;
   }
 });

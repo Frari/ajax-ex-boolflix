@@ -28,13 +28,21 @@ header{
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
+  margin:0 auto;
+  width: 1200px;
 }
 .locandina{
   width: 200px;
   height: 200px;
   border: 1px solid white;
   float: left;
+  background-color: black;
+  padding: 10px;
+  margin: 10px;
 }
 .locandina p{
   color: white;
+}
+.lingua img{
+  width: 25px;
 }
