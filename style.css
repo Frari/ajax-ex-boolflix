@@ -13,13 +13,45 @@ header{
   width: 100%;
   height: 100px;
   background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 .header_right{
+  display: flex;
+  align-items: center;
+  height: 100px;
   float: right;
+}
+.header_right #input_utente{
+  margin-right: 30px;
+  height: 40px;
+  width: 250px;
+  border-radius: 5px;
+  border: none;
+  padding-left: 10px;
+}
+.header_right #but_utente{
+  margin-right: 10px;
+  height: 40px;
+  width: 80px;
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+}
+.header_left{
+  display: flex;
+  align-items: center;
+  height: 100px;
+  float: left;
 }
 .header_left h1{
   color: red;
   text-transform: uppercase;
+  margin-left: 40px;
+  font-size: 40px;
 }
 #cont_locandina{
   width:100vw;
@@ -30,15 +62,19 @@ header{
   flex-wrap: wrap;
   margin:0 auto;
   width: 1200px;
+  margin-top: 100px;
 }
 .locandina{
   width: 200px;
-  max-height: 500px;
+  height: 300px;
   border: 1px solid white;
   float: left;
   background-color: black;
   padding: 10px;
   margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .locandina p{
   color: white;

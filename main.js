@@ -2,7 +2,7 @@ $(document).ready(function(){
 
   var url_base = 'https://api.themoviedb.org/3/';
   var img_url_base = 'https://image.tmdb.org/t/p/';
-  var dim_img = 'w185';
+  var dim_img = 'w342';
 
   var template_html=$('#template_film').html();
   var template_function = Handlebars.compile(template_html);
@@ -28,12 +28,19 @@ $(document).ready(function(){
 // prendo il valore della parola digitata dall'utente
     var inserimento_utente = $('#input_utente').val();
     chiamata_api(inserimento_utente);
-    change_locandina();
+
 // azzero la ricerca
     $('#input_utente').val('');
 
   });
-
+  $(document).on('mouseenter','.locandina',function(){
+    $(this).find('.poster img').addClass('nascondi');
+    $(this).find('.dettagli').addClass('visibile');
+  });
+  $(document).on('mouseleave','.locandina',function(){
+    $(this).find('.poster img').removeClass('nascondi');
+    $(this).find('.dettagli').removeClass('visibile');
+  });
 // creo funzione per chiamata ajax
   function chiamata_api(inserimento_utente){
     var inserimento_utente = $('#input_utente').val();
@@ -175,15 +182,5 @@ $(document).ready(function(){
     }
     return lingua;
   }
-// funzione per far apparire le caratteristiche del film quando si va sopra con il mause
-  function change_locandina(){
-    $('.locandina').mouseenter(function(){
-      $(this).find('.poster img').addClass('.nascondi');
-      $(this).find('dettagli').addClass('visibile');
-    });
-    $('.locandina').mouseleave(function(){
-      $(this).find('.poster img').removeClass('.nascondi');
-      $(this).find('dettagli').removeClass('visibile');
-    });
-  }
+
 });
