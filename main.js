@@ -65,7 +65,7 @@ $(document).ready(function(){
           'method':'GET',
           success:function(data_response){
     // dichiaro una variabile per i risultati della ricerca
-            var movies = data_response.results;
+            var series = data_response.results;
             stampa_locandine(series);
           },
           error:function(){
@@ -88,12 +88,14 @@ $(document).ready(function(){
       var numero_stelline = get_numero_stelline(parseFloat(movie.vote_average));
       var html_stelline = get_html_stelline(numero_stelline);
 
+
     // creo oggetto handlebars
       var handlebars_variables = {
         'title':titolo,
         'original_title':titolo_originale,
         'language':lingua,
-        'rating':html_stelline
+        'rating':html_stelline,
+        'type':tipo
       }
       var html_locandina = template_function(handlebars_variables);
       $('#cont_locandina').append(html_locandina);
@@ -107,7 +109,7 @@ $(document).ready(function(){
     // svuoto la schermata dalle locandine precedenti per nuova ricerca
     $('#cont_locandina').html('');
     // creo ciclo for per estrapolare i risultati richiesti dalla ricerca dell'utente
-    for(var i=0; i<serie.length; i++){
+    for(var i=0; i<series.length; i++){
       var serie = series[i];
     // dichiaro le variabili alle quali associo i valori che mi interessano
       var titolo = serie.name;
@@ -115,18 +117,25 @@ $(document).ready(function(){
       var lingua = get_bandiera_lingua(serie.original_language);
       var numero_stelline = get_numero_stelline(parseFloat(serie.vote_average));
       var html_stelline = get_html_stelline(numero_stelline);
+      var tipo = 'film';
+      if(typeof serie.type =='undefined'){
+        serie.type = tipo;
+      }
 
     // creo oggetto handlebars
       var handlebars_variables = {
         'title':titolo,
         'original_title':titolo_originale,
         'language':lingua,
-        'rating':html_stelline
+        'rating':html_stelline,
+        'type':'serie tv'
       }
       var html_locandina = template_function(handlebars_variables);
       $('#cont_locandina').append(html_locandina);
 
     }
+
+  }
   // funzione per dimezzare e arrontondare il voto dei film
   function get_numero_stelline(voto){
     var stelline = Math.ceil(voto/2);
