@@ -1,6 +1,8 @@
 $(document).ready(function(){
 
   var url_base = 'https://api.themoviedb.org/3/';
+  var img_url_base = 'https://image.tmdb.org/t/p/';
+  var dim_img = 'w185';
 
   var template_html=$('#template_film').html();
   var template_function = Handlebars.compile(template_html);
@@ -26,6 +28,7 @@ $(document).ready(function(){
 // prendo il valore della parola digitata dall'utente
     var inserimento_utente = $('#input_utente').val();
     chiamata_api(inserimento_utente);
+    change_locandina();
 // azzero la ricerca
     $('#input_utente').val('');
 
@@ -47,7 +50,7 @@ $(document).ready(function(){
       success:function(data_response){
 // dichiaro una variabile per i risultati della ricerca
         var movies = data_response.results;
-        stampa_locandine(movies);
+        stampa_locandine_movie(movies);
       },
       error:function(){
         alert('errore');
@@ -66,7 +69,7 @@ $(document).ready(function(){
           success:function(data_response){
     // dichiaro una variabile per i risultati della ricerca
             var series = data_response.results;
-            stampa_locandine(series);
+            stampa_locandine_serie(series);
           },
           error:function(){
             alert('errore');
@@ -75,7 +78,7 @@ $(document).ready(function(){
         })
   }
   // funzione per stampare le locandine dei film
-  function stampa_locandine(movies){
+  function stampa_locandine_movie(movies){
     // svuoto la schermata dalle locandine precedenti per nuova ricerca
     $('#cont_locandina').html('');
     // creo ciclo for per estrapolare i risultati richiesti dalla ricerca dell'utente
@@ -87,14 +90,20 @@ $(document).ready(function(){
       var lingua = get_bandiera_lingua(movie.original_language);
       var numero_stelline = get_numero_stelline(parseFloat(movie.vote_average));
       var html_stelline = get_html_stelline(numero_stelline);
+      var tipo = 'film';
 
-
+      if(movie.poster_path == null){
+        var url_poster_movie = 'img/img_not.jpg'
+      }else{
+        var url_poster_movie = img_url_base + dim_img + movie.poster_path;
+      }
     // creo oggetto handlebars
       var handlebars_variables = {
         'title':titolo,
         'original_title':titolo_originale,
         'language':lingua,
         'rating':html_stelline,
+        'copertina':url_poster_movie,
         'type':tipo
       }
       var html_locandina = template_function(handlebars_variables);
@@ -105,7 +114,7 @@ $(document).ready(function(){
 
   }
   // funzione per stampare le locandine delle serie tv
-  function stampa_locandine(series){
+  function stampa_locandine_serie(series){
     // svuoto la schermata dalle locandine precedenti per nuova ricerca
     $('#cont_locandina').html('');
     // creo ciclo for per estrapolare i risultati richiesti dalla ricerca dell'utente
@@ -117,9 +126,12 @@ $(document).ready(function(){
       var lingua = get_bandiera_lingua(serie.original_language);
       var numero_stelline = get_numero_stelline(parseFloat(serie.vote_average));
       var html_stelline = get_html_stelline(numero_stelline);
-      var tipo = 'film';
-      if(typeof serie.type =='undefined'){
-        serie.type = tipo;
+      var tipo = 'serie tv';
+
+      if(serie.poster_path == null){
+        var url_poster_serie = 'img/img_not.jpg'
+      }else{
+        var url_poster_serie = img_url_base + dim_img + serie.poster_path;
       }
 
     // creo oggetto handlebars
@@ -128,7 +140,8 @@ $(document).ready(function(){
         'original_title':titolo_originale,
         'language':lingua,
         'rating':html_stelline,
-        'type':'serie tv'
+        'type': tipo,
+        'copertina':url_poster_serie
       }
       var html_locandina = template_function(handlebars_variables);
       $('#cont_locandina').append(html_locandina);
@@ -161,5 +174,16 @@ $(document).ready(function(){
       return '<img src="img/'+ lingua +'.png">';
     }
     return lingua;
+  }
+// funzione per far apparire le caratteristiche del film quando si va sopra con il mause
+  function change_locandina(){
+    $('.locandina').mouseenter(function(){
+      $(this).find('.poster img').addClass('.nascondi');
+      $(this).find('dettagli').addClass('visibile');
+    });
+    $('.locandina').mouseleave(function(){
+      $(this).find('.poster img').removeClass('.nascondi');
+      $(this).find('dettagli').removeClass('visibile');
+    });
   }
 });

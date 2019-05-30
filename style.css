@@ -33,7 +33,7 @@ header{
 }
 .locandina{
   width: 200px;
-  height: 200px;
+  max-height: 500px;
   border: 1px solid white;
   float: left;
   background-color: black;
@@ -45,4 +45,16 @@ header{
 }
 .lingua img{
   width: 25px;
+}
+.poster img{
+  max-width: 185px;
+}
+.dettagli{
+  display: none;
+}
+.nascondi{
+  display: none;
+}
+.dettagli.visibile{
+  display: block;
 }
